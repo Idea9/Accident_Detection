@@ -1,27 +1,17 @@
 import numpy as np
 import cv2
 
-cap = cv2.VideoCapture(0)
-
-# Define the codec and create VideoWriter object
-fourcc = cv2.cv.CV_FOURCC(*'XVID')
-out = cv2.VideoWriter('output.avi',fourcc, 20.0, (640,480))
-
-while(cap.isOpened()):
-    ret, frame = cap.read()
-    if ret==True:
-        frame = cv2.flip(frame,0)
-
-        # write the flipped frame
-        out.write(frame)
-
-        cv2.imshow('frame',frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-    else:
-        break
-
-# Release everything if job is finished
-cap.release()
-out.release()
+img = cv2.imread("jennifer.jpg", 0)
+# 1-color 0-grey -1-with alpha-channel
+print img
+# print return none if there is no image, that is debuging, no error code for empty image
+cv2.namedWindow('windowName', cv2.WINDOW_AUTOSIZE)
+# that might be useful later, it create windows for now without image on it, you can specify window size for now
+cv2.imshow("windowName", img)
+# do as many windows as you like, just with unique name
+cv2.imwrite("deadJennifer.jpg", img)
+# just save the picture
+cv2.waitKey(0)
+# it waits 0 ms for keystroke, you can specified key also but not now
 cv2.destroyAllWindows()
+# figure it out asshole
