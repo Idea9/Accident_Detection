@@ -1,28 +1,23 @@
 import numpy as np
 import cv2
 
-cap = cv2.VideoCapture("http://149.156.199.210:8080/mjpg/video.mjpg")
+# Create a black image
+img = np.zeros((512, 512, 3), np.uint8)
 
-fourcc = cv2.cv.CV_FOURCC(*'XVID')
-out = cv2.VideoWriter('output.avi',fourcc, 20.0, (int(cap.get(3)),int(cap.get(4))))
+cv2.line(img, (3, 3), (510, 510), (255, 0, 0), 15)
+cv2.circle(img,(447,63), 63, (0,0,255), 3)
+cv2.circle(img,(447,63), 15, (0,233,255), -40)
 
-# easy get video to "cap" varqiable from 0 -> means local camera
-while cap.isOpened():
-    ret, frame = cap.read()
+pts = np.array([[10,5],[20,30],[70,20],[50,10]], np.int32)
+#pts = pts.reshape((-1,1,2))
+cv2.polylines(img,[pts],True,(0,255,255))
 
-    if ret:
-        # read() zwraca 2 wartosci, jedna to true dla poprawnie odebranej ramki, druga to sama ramka w postaci macierzy
-        print cap.get(4)
-        # get wyswietla parametry na temat plik, jest ich 18(w dok/tut), 4 to dla przykladu "width" klatki
-        out.write(frame)
-        cv2.imshow('window', frame)
-        #downie pierwszy czlon to po prosu nazwa okna, drugi to frame do wyswietlenia
+# bo line nic nie zwraca, a jedynie dziala na elemencie ktory otrzymal
+cv2.imwrite("line.bmp", img)
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-    else:
+while True:
+    cv2.imshow("window", img)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-# When everything done, release the capture
-out.release()
-cap.release()
+
 cv2.destroyAllWindows()
