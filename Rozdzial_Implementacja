@@ -1,0 +1,25 @@
+PISZEMY OD RAZU ROZDZIAL
+
+Wektory ruchu pobrane zostaly przy pomocy zmodyfikowanego, opensource-owego programu do odtwarzania plikow wideo.
+
+Wektory ruchu pobierane sa z kilku/kilkunasto sekundowych probek video o parametrach.
+
+Rozmiar: 320px x 180px
+Ramek na sekunde: 20 FPS
+Kodowanie: MPEG-2
+Format: mp4
+
+Kazda ramka sklada sie z makroblokow rozmiaru 16x16, a do kazdego z nich przypisany jest wektor ruchu. Kazdy wektor
+sklada sie na z dwoch wartosci przesuniecia na osi X oraz Y. Pierwszym punktem zliczamy dla kazdej ramki sume dlugosci
+wszystkich wektorow poslugujac sie prostymi wzorami:
+
+|V| - wzor na dlugosc wektora
+F = suma po n wektorow z |V|
+
+
+#ROZWAZANIA W tym momencie warto zastanowic sie nad doborem jezyka programowania, glownym wyznacznikiem na tym etapie
+bedzie szybkosc dzialajacego kodu. Najlepszym rozwiazaniem jest korzystanie z jezyka C. Co istotne wiele innych, o wiele
+ czytelniejszych jezykow programowania, korzysta z bibliotek napisanych wlasnie w C.x` Takie rozwiazania znacznie ulatwiaja
+  prace nad implementacja laczac szybkosc pisania kodu oraz szybkosc dzialania programu.
+
+  Python High Performance Programming - Lanaro, Gabriele
