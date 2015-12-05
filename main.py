@@ -1,9 +1,11 @@
 import re
 import array
 vectorFile = open("vectors.txt")
+test = open("text.txt", "r+")
 frameStartIndexes = []
 frames = []
-last = 0
+
+# Funckja do dowolnego lini o danym stringu
 def remove_values_from_list(the_list, val):
    return [value for value in the_list if value != val]
 
