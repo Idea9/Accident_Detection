@@ -2,13 +2,15 @@ PISZEMY OD RAZU ROZDZIAL
 
 Wektory ruchu pobrane zostaly przy pomocy zmodyfikowanego, opensource-owego programu do odtwarzania plikow wideo.
 
-Wektory ruchu pobierane sa z kilku/kilkunasto sekundowych probek video o parametrach.
+Analize probek rozpoczynamy od zdekodowania z kilku/kilkunasto sekundowych probek video o parametrach.
 
 Rozmiar: 320px x 180px
 Ramek na sekunde: 20 FPS
 Kodowanie: MPEG-2
 Format: mp4
 
+Dekodowanie odbywa sie przy pomocy zmodyfikowanego opensourcowego program do odtwarzania plików wideo. Kazda ramka jest na
+wstepie indentyfikowana pod wzgledem typu I/B/P.
 Kazda ramka sklada sie z makroblokow rozmiaru 16x16, a do kazdego z nich przypisany jest wektor ruchu. Kazdy wektor
 sklada sie na z dwoch wartosci przesuniecia na osi X oraz Y. Pierwszym punktem zliczamy dla kazdej ramki sume dlugosci
 wszystkich wektorow poslugujac sie prostymi wzorami:
