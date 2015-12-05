@@ -7,15 +7,19 @@ last = 0
 def remove_values_from_list(the_list, val):
    return [value for value in the_list if value != val]
 
-def seperate_list(list, newFramePoint):
-    return 0;
+def seperate_list(frame, file, newFramePoint):
+    last = 0
+    for new in newFramePoint:
+        if last:
+            frames.append(file[last:new])
+        last = new
 
 pureVectorFile = remove_values_from_list(vectorFile, "\n")
+
 for line in pureVectorFile:
     if re.search("P ", line):
         frameStartIndexes.append(pureVectorFile.index(line))
 
-for new in frameStartIndexes:
-    if last:
-        frames.append(pureVectorFile[last:new])
-    last = new
+seperate_list(frames, pureVectorFile, frameStartIndexes)
+
+print frames[0]
