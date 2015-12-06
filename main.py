@@ -18,6 +18,10 @@ def seperate_list(frame, file, newFramePoint):
             frames.append(file[(last+1):new])
         last = new
 
+# Funkcja liczaca dlugosc wektora
+def vector_length(x, y):
+    return math.sqrt(float(x) * float(x) + float(y) * float(y))
+
 # Usuwamy z otworzonego pliku puste linie
 pureVectorFile = remove_values_from_list(vectorFile, "\n")
 
@@ -30,9 +34,14 @@ for line in pureVectorFile:
 seperate_list(frames, pureVectorFile, frameStartIndexes)
 
 i = 0
+totalMotion = []
+vectorLength = []
 for frame in frames:
-    i += 1
-    print "nowy kurwa frame", i
+    vLength = []
     for macroblock in frame:
         macroblock = macroblock.split()
-        print math.sqrt(((float)(macroblock[2]) * (float)(macroblock[2])) + ((float)(macroblock[3]) * (float)(macroblock[3])))
+        vLength.append(vector_length(macroblock[2], macroblock[3]))
+    vectorLength.append(vLength)
+    totalMotion.append(sum(vLength))
+
+print totalMotion
