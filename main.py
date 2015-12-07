@@ -33,9 +33,10 @@ for line in pureVectorFile:
 # Dzielimy otworzony plik na ramki
 seperate_list(frames, pureVectorFile, frameStartIndexes)
 
-
+areaMotion = []
 for frame in frames:
     area0, area1, area2, area3, area4, area5, area6, area7, area8 = ([] for i in range(9))
+    FrameByArea = []
     for macroblock in frame:
         macroblock = macroblock.split()
         x = int(macroblock[0])
@@ -60,8 +61,12 @@ for frame in frames:
         elif x>210 and y>=126:
             area8.append(currentVector)
         else:
-            print "no kurwa sprobuj"
-    print len(area0), len(area1), len(area2), len(area3), len(area4), len(area5), len(area6), len(area7), len(area8)
+            print "makroblok nie pasuje do zadnego obszaru"
+    FrameByArea.extend((sum(area0), sum(area1), sum(area2), sum(area3), sum(area4), sum(area5), sum(area6), sum(area7), sum(area8)))
+    areaMotion.append(FrameByArea)
+
+print areaMotion
+
 # i = 0
 # totalMotion = []
 # vectorLength = []
