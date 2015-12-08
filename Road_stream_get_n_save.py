@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-cap = cv2.VideoCapture("http://149.156.199.210:8080/mjpg/video.mjpg")
+cap = cv2.VideoCapture(0)
 
 fourcc = cv2.cv.CV_FOURCC(*'XVID')
 out = cv2.VideoWriter('output.avi',fourcc, 20.0, (int(cap.get(3)),int(cap.get(4))))

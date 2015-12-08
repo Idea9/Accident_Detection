@@ -1,81 +1,41 @@
-import re
-import math
+import numpy as np
+import cv2
 
-vectorFile = open("vectors.txt")
-test = open("text.txt", "r+")
-frameStartIndexes = []
-frames = []
+cap = cv2.VideoCapture("video/Pure1.avi")
+# easy get video to "cap" variable from 0 -> means local camera
 
-# Funckja do dowolnego lini o danym stringu
-def remove_values_from_list(the_list, val):
-   return [value for value in the_list if value != val]
+frameNumber = 25*60
+i = 0
+fileNumber = 0
+absoluteFrame = 0
+fourcc = cv2.cv.CV_FOURCC(*'XVID')
+out = cv2.VideoWriter("test", fourcc, 20.0, (int(cap.get(3)), int(cap.get(4))))
+while cap.isOpened():
+    if cap.cv.empty():
+        ret, frame = cap.read()
+        # read() zwraca 2 wartosci, jedna to true dla poprawnie odebranej ramki, druga to sama ramka w postaci macierzy
 
-# Funkcja rozdzielajaca liste na mniejsze porcje wg index'u wskazanych punktow
-def seperate_list(frame, file, newFramePoint):
-    last = 0
-    for new in newFramePoint:
-        if last:
-            frames.append(file[(last+1):new])
-        last = new
+        # set moze ustawiac te parametry ktore sa w get(), zmiana kazdej klatki na inna to jednak nie najlepszy pomysl toche muli dziada
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        # po prostu bierzesz kazdy frame, przekladasz mu kolory i zapisujesz do gray
+        if i == 0:
+            name = 'TestMaterial/Video' + str(fileNumber) + '.avi'
+            out = cv2.VideoWriter(name, fourcc, 20.0, (int(cap.get(3)), int(cap.get(4))))
 
-# Funkcja liczaca dlugosc wektora
-def vector_length(x, y):
-    return math.sqrt(float(x) * float(x) + float(y) * float(y))
+        out.write(frame)
+        i += 1
 
-# Usuwamy z otworzonego pliku puste linie
-pureVectorFile = remove_values_from_list(vectorFile, "\n")
+        if i == frameNumber:
+            out.release()
+            fileNumber += 1
+            i = 0
 
-# Szukamy poczatku ramek P, niezbedne do podzielenia pliku
-for line in pureVectorFile:
-    if re.search("P ", line):
-        frameStartIndexes.append(pureVectorFile.index(line))
+        absoluteFrame += 1
+        print absoluteFrame
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
-# Dzielimy otworzony plik na ramki
-seperate_list(frames, pureVectorFile, frameStartIndexes)
 
-areaMotion = []
-for frame in frames:
-    area0, area1, area2, area3, area4, area5, area6, area7, area8 = ([] for i in range(9))
-    FrameByArea = []
-    for macroblock in frame:
-        macroblock = macroblock.split()
-        x = int(macroblock[0])
-        y = int(macroblock[1])
-        currentVector = vector_length(macroblock[2], macroblock[3])
-        if x<107 and y<66:
-            area0.append(currentVector)
-        elif x<210 and x>=107 and y<66:
-            area1.append(currentVector)
-        elif x>210 and y<66:
-            area2.append(currentVector)
-        elif x<107 and y<126 and y>=67:
-            area3.append(currentVector)
-        elif x<210 and x>=107 and y<126 and y>=67:
-            area4.append(currentVector)
-        elif x>210 and y<126 and y>=67:
-            area5.append(currentVector)
-        elif x<107 and y>=126:
-            area6.append(currentVector)
-        elif x<210 and x>=107 and y>=126:
-            area7.append(currentVector)
-        elif x>210 and y>=126:
-            area8.append(currentVector)
-        else:
-            print "makroblok nie pasuje do zadnego obszaru"
-    FrameByArea.extend((sum(area0), sum(area1), sum(area2), sum(area3), sum(area4), sum(area5), sum(area6), sum(area7), sum(area8)))
-    areaMotion.append(FrameByArea)
-
-print areaMotion
-
-# i = 0
-# totalMotion = []
-# vectorLength = []
-# for frame in frames:
-#     vLength = []
-#     for macroblock in frame:
-#         macroblock = macroblock.split()
-#         vLength.append(vector_length(macroblock[2], macroblock[3]))
-#     vectorLength.append(vLength)
-#     totalMotion.append(sum(vLength))
-#
-# print totalMotion
+# When everything done, release the capture
+cap.release()
+cv2.destroyAllWindows()

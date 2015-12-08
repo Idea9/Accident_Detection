@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-cap = cv2.VideoCapture("video/ScreenCaptureProject.mp4")
+cap = cv2.VideoCapture("video/Without_face1.avi")
 # easy get video to "cap" variable from 0 -> means local camera
 while(True):
     ret, frame = cap.read()
