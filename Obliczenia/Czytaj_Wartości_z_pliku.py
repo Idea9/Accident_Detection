@@ -1,13 +1,9 @@
 import numpy as np
 import re
 import math
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import matplotlib.path as path
-from scipy import special
-from scipy import stats
 
-vectorFile = open("Vectors/Umbrella_on_sight.txt")
+sample = "Umbrella_on_sight"
+vectorFile = open("Vectors/" + sample + ".txt")
 frameStartIndexes = []
 frames = []
 f = open('klasyfikatory/Total_Pure_v1.txt', 'r+')
@@ -55,10 +51,14 @@ print maximum, threshold
 
 # Obliczamy tottalny ruch w calej ramce
 totalMotion = np.array([0])
+frameNumber = 0
 for frame in frames:
+    frameNumber += 1
     vLength = []
     for macroblock in frame:
         macroblock = macroblock.split()
         vLength.append(vector_length(macroblock[2], macroblock[3]))
     a = sum(vLength)
     totalMotion = np.append(totalMotion, a + 0.000001)
+
+print "Liczba ramek z wektorami ruchu: ", frameNumber
