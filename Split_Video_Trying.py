@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-cap = cv2.VideoCapture("video/Pure1.avi")
+cap = cv2.VideoCapture("video/Man_in_background.avi")
 # easy get video to "cap" variable from 0 -> means local camera
 
 frameNumber = 25*60
