@@ -4,32 +4,26 @@ import math
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib.path as path
-from scipy import special
-from scipy import stats
 
 vectorFile = open("Vectors/Pure_Traffic.txt")
 frameStartIndexes = []
 frames = []
-f = open('klasyfikatory/Total_Pure_v1.txt', 'w')
 
 # Funckja do dowolnego lini o danym stringu
 def remove_values_from_list(the_list, val):
-    return [value for value in the_list if value != val]
-
+   return [value for value in the_list if value != val]
 
 # Funkcja rozdzielajaca liste na mniejsze porcje wg index'u wskazanych punktow
 def seperate_list(frame, file, newFramePoint):
     last = 0
     for new in newFramePoint:
         if last:
-            frames.append(file[(last + 1):new])
+            frames.append(file[(last+1):new])
         last = new
-
 
 # Funkcja liczaca dlugosc wektora
 def vector_length(x, y):
     return math.sqrt(float(x) * float(x) + float(y) * float(y))
-
 
 # Usuwamy z otworzonego pliku puste linie
 pureVectorFile = remove_values_from_list(vectorFile, "\n")
@@ -50,7 +44,8 @@ for frame in frames:
         macroblock = macroblock.split()
         vLength.append(vector_length(macroblock[2], macroblock[3]))
     a = sum(vLength)
-    totalMotion = np.append(totalMotion, a + 0.000001)
+    if a > 70:
+        totalMotion = np.append(totalMotion, a + 0.000001)
 
 # Kazda ramka dzielona jest na 9 blokow o rownych rozmiarach
 # Do kazdego z bloku wpisywana jest suma dlugosci wekktorow ruchu w tym bloku
@@ -125,66 +120,28 @@ for frame in frames:
 
 print totalMotion
 
-# fig, ax = plt.subplots()
-#
-# n, bins = np.histogram(totalMotion, 50)
-# left = np.array(bins[:-1])
-# right = np.array(bins[1:])
-# bottom = np.zeros(len(left))
-# top = bottom + n
-#
-# # we need a (numrects x numsides x 2) numpy array for the path helper
-# # function to build a compound path
-# XY = np.array([[left, left, right, right], [bottom, top, top, bottom]]).T
-#
-# # get the Path object
-# barpath = path.Path.make_compound_path_from_polys(XY)
-#
-# # make a patch out of it
-# patch = patches.PathPatch(
-#     barpath, facecolor='blue', edgecolor='gray', alpha=0.8)
-# ax.add_patch(patch)
-#
-# # update the view limits
-# ax.set_xlim(left[0], right[-1])
-# ax.set_ylim(bottom.min(), top.max())
-#
-# plt.show()
+fig, ax = plt.subplots()
 
-minimum = min(totalMotion)
-maximum = max(totalMotion)
+n, bins = np.histogram(totalMotion, 50)
+left = np.array(bins[:-1])
+right = np.array(bins[1:])
+bottom = np.zeros(len(left))
+top = bottom + n
 
-matrix = np.zeros((2,50))
-przedzialy = np.linspace(minimum, maximum, num = 50)
-matrix[0] += przedzialy
+# we need a (numrects x numsides x 2) numpy array for the path helper
+# function to build a compound path
+XY = np.array([[left, left, right, right], [bottom, top, top, bottom]]).T
 
-for move in np.nditer(totalMotion):
-    low = 0
-    i = 0
-    for high in matrix[0]:
-        if low < move <= high:
-            matrix[1][i] += 1
-        i += 1
-        low = high
+# get the Path object
+barpath = path.Path.make_compound_path_from_polys(XY)
 
-border = len(totalMotion)/100
+# make a patch out of it
+patch = patches.PathPatch(
+    barpath, facecolor='blue', edgecolor='gray', alpha=0.8)
+ax.add_patch(patch)
 
-i = 0
-sum = 0
-for quantity in reversed(matrix[1]):
-    i += 1
-    sum += quantity
-    if sum > border:
-        lastInterval = 50-i-1
-        break
+# update the view limits
+ax.set_xlim(left[0], right[-1])
+ax.set_ylim(bottom.min(), top.max())
 
-print matrix
-print len(totalMotion), border, lastInterval
-threshold = float(matrix[0][lastInterval])
-
-
-f.write("Maximum = " + str(maximum)+ "\n" + "Threshold = " + str(threshold))
-
-# print przedzial
-# print min(totalMotion)
-# print max(totalMotion)
+plt.show()
