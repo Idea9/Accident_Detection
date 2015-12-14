@@ -11,12 +11,8 @@ def check_result(condition, results):
             ok += 1
     return float(ok)/len(results)*100, "%"
 
-
-normalTotalMotion = get_motion_feature("Pure_Traffic1", 250, 1550, 0)
-abnormalTotalMotion = get_motion_feature("Man_through_road4", 70, 160, 0)
-
-normalAngleMotion = get_motion_feature("Pure_Traffic1", 250, 1550, 1)
-abnormalAngleMotion = get_motion_feature("Man_through_road4", 70, 160, 1)
+normalTotalMotion, normalAngleMotion = get_motion_feature("Pure_Traffic1", 250, 1550, 2)
+abnormalTotalMotion, abnormalAngleMotion = get_motion_feature("Man_through_road4", 70, 160, 2)
 
 normal = np.zeros(len(normalTotalMotion))
 abnormal = np.ones(len(abnormalTotalMotion))

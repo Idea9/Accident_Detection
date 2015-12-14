@@ -132,6 +132,10 @@ def get_motion_feature(file, startFrame, endFrame, returnOption):
     elif returnOption == 1:
         print len(totalMotion), " probek ruchu katowego"
         return sampleAngle
+    elif returnOption == 2:
+        print len(totalMotion), " probek ruchu katowego"
+        print len(totalMotion), " probek ruchu calkowitego"
+        return totalMotion, sampleAngle
     else:
         return -1
         print "nie ma takiej opcji"
